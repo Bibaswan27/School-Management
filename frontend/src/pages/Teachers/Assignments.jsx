@@ -1,0 +1,83 @@
+// AssignmentSection.js
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Sidebar from './Sidebar';
+
+
+const AssignmentSection = () => {
+  const [newAssignment, setNewAssignment] = useState({ title: '', description: '', grade: '', deadline: '' });
+  const [assignments, setAssignments] = useState([]);
+
+  useEffect(() => {
+    fetchAssignments();
+  }, []);
+
+  const fetchAssignments = async () => {
+    try {
+      const response = await axios.get('http://localhost:4000/api/v1/assignments/getall');
+      setAssignments(response.data.assignments);
+    } catch (error) {
+      console.error('Error fetching assignments:', error);
+    }
+  };
+
+  const handleAddAssignment = async (e) => {
+    e.preventDefault();
+    if (newAssignment.title.trim() !== '' && newAssignment.description.trim() !== '' && newAssignment.grade.trim() !== '' && newAssignment.deadline.trim() !== '') {
+      try {
+        const response = await axios.post('http://localhost:4000/api/v1/assignments', newAssignment);
+        setAssignments([...assignments, response.data.assignment]);
+        setNewAssignment({ title: '', description: '', grade: '', deadline: '' });
+      } catch (error) {
+        console.error('Error adding assignment:', error);
+      }
+    }
+  };
+
+  return (
+    <div>
+      <Sidebar />
+      <div>
+        <div>
+          <div>Assignments</div>
+          <div onSubmit={handleAddAssignment}>
+            <div
+              type="text"
+              placeholder="Enter assignment title"
+              value={newAssignment.title}
+              onChange={(e) => setNewAssignment({ ...newAssignment, title: e.target.value })}
+            />
+            <div
+              placeholder="Enter assignment description"
+              value={newAssignment.description}
+              onChange={(e) => setNewAssignment({ ...newAssignment, description: e.target.value })}
+            />
+            <div
+              type="text"
+              placeholder="Enter assignment grade"
+              value={newAssignment.grade}
+              onChange={(e) => setNewAssignment({ ...newAssignment, grade: e.target.value })}
+            />
+            <div
+              type="text"
+              placeholder="Enter assignment deadline"
+              value={newAssignment.deadline}
+              onChange={(e) => setNewAssignment({ ...newAssignment, deadline: e.target.value })}
+            />
+            <div type="submit">Add Assignment</div>
+          </div>
+          <div>
+            {assignments.map((assignment) => (
+              <div key={assignment.id}>
+                <strong>{assignment.title}: </strong>
+                {assignment.description}, {assignment.grade}, {assignment.deadline}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AssignmentSection;
