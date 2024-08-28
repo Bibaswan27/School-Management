@@ -14,7 +14,7 @@ export const createAnnouncement = async (req, res, next) => {
     message: "Announcement Created!",
   });
   } catch (err) {
-    next(err);
+    return res.status(400).json({message:err});
   }
 };
 
@@ -26,7 +26,7 @@ export const getAllAnnouncements = async (req, res, next) => {
     announcements,
   }); 
   } catch (err) {
-    next(err);
+    return res.status(400).json({message:err});
   }
 };
 

@@ -7,6 +7,9 @@ const Library = () => {
 
   useEffect(() => {
     fetchBooks();
+    addBook();
+    handleBookPick();
+    handleBookReturn();
   }, []);
 
   const fetchBooks = async () => {
@@ -20,7 +23,7 @@ const Library = () => {
 
   const addBook = async (book) => {
     try {
-      const response = await axios.post('http://localhost:4000/api/v1/library', {
+      const response = await axios.post('http://localhost:4000/api/v1/library/books', {
         bookname: book.title,
         author: book.author,
       });
@@ -31,11 +34,30 @@ const Library = () => {
   };
 
   const handleBookPick = async (bookId, studentId) => {
-    // Implement logic to record when a student picks a book
+    try {
+      const response = await axios.put(`http://localhost:4000/api/v1/library/books/${bookId}/pick`, {
+        studentId,
+      });
+  
+      if (response.status === 200) {
+        setBooks(books.map((book) => (book._id === bookId ? { ...book, isBorrowed: true } : book)));
+      }
+    } catch (error) {
+      console.error('Error picking book:', error);
+    }
   };
-
+  
   const handleBookReturn = async (bookId, studentId) => {
-    // Implement logic to mark when a student returns a book
+    try {
+      const response = await axios.put(`http://localhost:4000/api/v1/library//books/${bookId}/return`, {
+        studentId,
+      });
+      if (response.status === 200) {
+        setBooks(books.map((book) => (book._id === bookId ? { ...book, isBorrowed: false } : book)));
+      }
+    } catch (error) {
+      console.error('Error returning book:', error);
+    }
   };
 
   return (

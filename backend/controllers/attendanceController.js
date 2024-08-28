@@ -1,7 +1,7 @@
 import Attendance from "../models/attendanceSchema.js";
 import { handleValidationError } from "../middlewares/errorHandler.js";
 
-export const markAttendance = async (req, res, next) => {
+export const markAttendance = async (req, res) => {
   const { attendanceData } = req.body;
   try {
     if (!attendanceData || !Array.isArray(attendanceData) || attendanceData.length === 0) {
@@ -17,11 +17,11 @@ export const markAttendance = async (req, res, next) => {
       attendanceRecords
     });
   } catch (err) {
-    next(err);
+    return res.status(400).json({message:err});
   }
 };
 
-export const getAllAttendance = async (req, res, next) => {
+export const getAllAttendance = async (req, res) => {
   try {
     const attendanceRecords = await Attendance.find().populate('student', 'name registrationNumber grade');
     res.status(200).json({
@@ -29,6 +29,6 @@ export const getAllAttendance = async (req, res, next) => {
       attendanceRecords
     });
   } catch (err) {
-    next(err);
+    return res.status(400).json({message:err});
   }
 };

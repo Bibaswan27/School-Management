@@ -15,7 +15,7 @@ export const addExam = async (req, res, next) => {
       message: "A new exam has been added!",
     });
   } catch (err) {
-    next(err);
+    return res.status(400).json({message:err});
   }
 };
 
@@ -27,7 +27,6 @@ export const getAllExams = async (req, res, next) => {
       exams,
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    return res.status(400).json({message:err});
   }
 };

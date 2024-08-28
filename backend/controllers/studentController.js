@@ -3,7 +3,7 @@ import { Student } from "../models/studentSchema.js";
 import jwt from "jsonwebtoken";
 import { handleValidationError } from "../middlewares/errorHandler.js";
 
-export const studentSignIn = async (req, res, next) => {
+export const studentSignIn = async (req, res) => {
   const { email, password } = req.body;
   try {
     if (!email || !password) {
@@ -35,11 +35,11 @@ export const studentSignIn = async (req, res, next) => {
       message: "Signed in successfully",
     });
   } catch (err) {
-    next(err);
+    return res.status(400).json({message:err});
   }
 };
 
-export const getAllStudents = async (req, res, next) => {
+export const getAllStudents = async (req, res) => {
   try {
     const students = await Student.find();
     res.status(200).json({
@@ -47,7 +47,7 @@ export const getAllStudents = async (req, res, next) => {
       students,
     });
   } catch (err) {
-    next(err);
+    return res.status(400).json({message:err});
   }
 };
 

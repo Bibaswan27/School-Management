@@ -1,7 +1,7 @@
 import { Teacher } from "../models/teacherSchema.js";
 import { handleValidationError } from "../middlewares/errorHandler.js";
 
-export const teacherRegister= async (req, res, next) => {
+export const teacherRegister= async (req, res) => {
   const { name, email, password, subject } = req.body;
   try {
       if (!email || !password || !name || !subject ) {
@@ -18,6 +18,6 @@ export const teacherRegister= async (req, res, next) => {
     message: "Teacher Created!",
   });
   } catch (err) {
-    next(err);
+    return res.status(400).json({message:err});
   }
 };

@@ -8,12 +8,11 @@ const AdminDashboard = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [events, setEvents] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
-  const [studentPerformance, setStudentPerformance] = useState([]);
+
 
   useEffect(() => {
     fetchEvents();
     fetchAnnouncements();
-    fetchStudentPerformance();
   }, []);
 
   const fetchEvents = async () => {

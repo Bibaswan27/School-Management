@@ -1,20 +1,22 @@
 import mongoose from "mongoose";
-import validator from "validator";
 
 const librarySchema = new mongoose.Schema({
-  bookname: {
+    name: {
     type: String,
     required: true
   },
   author: {
     type: String,
-    required: true,
-    unique: true
+    required: true
   },
+  isBorrowed: {
+    type: Boolean,
+    required: true,
+  }
 });
 
 
-export const  Book = mongoose.model('Library', librarySchema);
+export const  Library = mongoose.model('Library', librarySchema);
 
 
 

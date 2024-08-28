@@ -2,7 +2,7 @@ import { handleValidationError } from "../middlewares/errorHandler.js";
 import { Admin } from "../models/adminSchema.js";
 import jwt from "jsonwebtoken";
 
-export const AdminSignIn = async (req, res, next) => {
+export const AdminSignIn = async (req, res) => {
   const { email, password } = req.body;
   try {
     if (!email || !password) {
@@ -18,9 +18,7 @@ export const AdminSignIn = async (req, res, next) => {
     const isPasswordValid = existingAdmin.password === password;
 
     if (!isPasswordValid) {
-      return res
-        .status(401)
-        .json({ success: false, message: "Invalid email or password" });
+      return res.status(401).json({ success: false, message: "Invalid email or password" });
     }
     const token = jwt.sign(
       { _id: existingAdmin._id },
@@ -34,6 +32,6 @@ export const AdminSignIn = async (req, res, next) => {
       message: "Signed in successfully",
     });
   } catch (err) {
-    next(err);
+    return res.status(400).json({message:err});
   }
 };

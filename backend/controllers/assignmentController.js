@@ -16,7 +16,7 @@ export const createAssignment = async (req, res, next) => {
       message: "Assignment Created!",
     });
   } catch (err) {
-    next(err);
+    return res.status(400).json({message:err});
   } 
 };
 
@@ -28,6 +28,6 @@ export const getAllAssignments = async (req, res, next) => {
       assignments,
     });
   } catch (err) {
-    next(err);
+    return res.status(400).json({message:err});
   }
 }; 

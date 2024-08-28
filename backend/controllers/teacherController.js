@@ -3,7 +3,7 @@ import { Teacher } from "../models/teacherSchema.js";
 import jwt from "jsonwebtoken";
 import { handleValidationError } from "../middlewares/errorHandler.js";
 
-export const teacherSignIn = async (req, res, next) => {
+export const teacherSignIn = async (req, res) => {
   const { email, password} = req.body;
   try {
     if (!email || !password ) {
@@ -35,12 +35,10 @@ export const teacherSignIn = async (req, res, next) => {
       message: "Signed in successfully",
     });
   } catch (err) {
-    next(err);
+    return res.status(400).json({message:err});
   }
 };
-
-
-  export const getAllTeachers = async (req, res, next) => {
+  export const getAllTeachers = async (req, res) => {
     try {
      const teachers = await Teacher.find();
     res.status(200).json({
@@ -48,7 +46,7 @@ export const teacherSignIn = async (req, res, next) => {
       teachers,
     });   
     } catch (err) {
-      next(err)
+      return res.status(400).json({message:err});
     }
   };
   

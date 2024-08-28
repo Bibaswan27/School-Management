@@ -1,7 +1,7 @@
 import {  Class } from "../models/classSchema.js";
 import { handleValidationError } from "../middlewares/errorHandler.js";
 
-export const createClass = async (req, res, next) => {
+export const createClass = async (req, res) => {
   console.log(req.body);
   const {grade } = req.body;
   try {
@@ -14,11 +14,11 @@ export const createClass = async (req, res, next) => {
     message: "Class Created!",
   }); 
   } catch (err) {
-    next(err);
+    return res.status(400).json({message:err});
   }
 };
 
-export const getAllClasses = async (req, res, next) => {
+export const getAllClasses = async (req, res) => {
   try {
   const classes = await Class.find();
   res.status(200).json({
@@ -26,7 +26,7 @@ export const getAllClasses = async (req, res, next) => {
     classes,
   });  
   } catch (err) {
-    next(err);
+    return res.status(400).json({message:err});
   }
 };
  

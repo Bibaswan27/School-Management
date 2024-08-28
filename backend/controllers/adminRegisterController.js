@@ -2,7 +2,7 @@
 import { Admin } from "../models/adminSchema.js";
 import { handleValidationError } from "../middlewares/errorHandler.js";
 
-export const adminRegister= async (req, res, next) => {
+export const adminRegister= async (req, res) => {
   //console.log(req.body);
   const { email, password  } = req.body;
   try {
@@ -22,7 +22,7 @@ export const adminRegister= async (req, res, next) => {
     message: "Admin Created!",
   });
   } catch (err) {
-    next(err);
+    return res.status(400).json({message:err});
   }
 };
 
